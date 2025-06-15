@@ -2,13 +2,13 @@ const TelegramBot = require('node-telegram-bot-api');
 const QRCode = require('qrcode');
 const express = require('express');
 
-// Your Telegram Bot Token
+// Your Telegram Bot Token from environment variables
 const token = process.env.BOT_TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 
-// Express Web Server (for keep-alive)
+// Express Web Server (keep-alive for Render)
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT  3000;
 
 app.get('/', (req, res) => {
   res.send("🤖 UPI QR Generator Bot — Powered by SHUBH is Alive!");
@@ -19,9 +19,9 @@ app.listen(PORT, () => {
 });
 
 let userUPI = {};
-let activeTimers = {};  // to store expiry timers
+let activeTimers = {};
 
-// Start Command
+// Start command
 bot.onText(/\/start/, (msg) => {
     const chatId = msg.chat.id;
     bot.sendMessage(chatId, `🤖 <b>Welcome to UPI QR Generator Bot</b> 💳
@@ -37,7 +37,7 @@ Generate secure UPI QR codes instantly & safely. Your data stays private 🔐.
     });
 });
 
-// Handle User Messages
+// Handle User Inputs
 bot.on('message', (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text;
@@ -80,12 +80,11 @@ bot.on('message', (msg) => {
                     parse_mode: "HTML"
                 });
 
-                // Start 5 minute expiry timer
                 if (activeTimers[chatId]) clearTimeout(activeTimers[chatId]);
                 activeTimers[chatId] = setTimeout(() => {
                     bot.sendMessage(chatId, ⏳ <b>Your previously generated QR code has now expired.</b>\n\nYou can generate a fresh QR code anytime! ✅, { parse_mode: "HTML" });
                     delete activeTimers[chatId];
-                }, 5 * 60 * 1000); // 5 minutes
+                }, 5 * 60 * 1000);
 
             } catch (err) {
                 console.error(err);
