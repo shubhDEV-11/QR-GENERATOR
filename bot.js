@@ -65,7 +65,7 @@ bot.on('message', (msg) => {
         bot.once('message', async (amtMsg) => {
             const amount = parseFloat(amtMsg.text.trim());
             if (isNaN(amount)  amount <= 0) {
-                bot.sendMessage(chatId, ❌ <b>Invalid amount entered.</b>\nPlease enter a valid numeric amount., { parse_mode: "HTML" });
+                bot.sendMessage(chatId, '❌ <b>Invalid amount entered.</b>\nPlease enter a valid numeric amount., { parse_mode: "HTML" });
                 return;
             }
 
@@ -76,19 +76,19 @@ bot.on('message', (msg) => {
                 const qrBuffer = await QRCode.toBuffer(upiURL, { width: 500 });
 
                 await bot.sendPhoto(chatId, qrBuffer, {
-                    caption: ✅ <b>QR Code Generated Successfully!</b>\n\n💸 <b>Amount:</b> ₹${amount}\n🔗 <b>UPI ID:</b> ${upiID}\n\n⚠️ <b>This QR code will expire automatically after 5 minutes.</b>\n\n🚀 <i>Powered by SHUBH</i>,
+                    caption: '✅ <b>QR Code Generated Successfully!</b>\n\n💸 <b>Amount:</b> ₹${amount}\n🔗 <b>UPI ID:</b> ${upiID}\n\n⚠️ <b>This QR code will expire automatically after 5 minutes.</b>\n\n🚀 <i>Powered by SHUBH</i>,
                     parse_mode: "HTML"
                 });
 
                 if (activeTimers[chatId]) clearTimeout(activeTimers[chatId]);
                 activeTimers[chatId] = setTimeout(() => {
-                    bot.sendMessage(chatId, ⏳ <b>Your previously generated QR code has now expired.</b>\n\nYou can generate a fresh QR code anytime! ✅, { parse_mode: "HTML" });
+                    bot.sendMessage(chatId, '⏳ <b>Your previously generated QR code has now expired.</b>\n\nYou can generate a fresh QR code anytime! ✅, { parse_mode: "HTML" });
                     delete activeTimers[chatId];
                 }, 5 * 60 * 1000);
 
             } catch (err) {
                 console.error(err);
-                bot.sendMessage(chatId, 🚫 <b>Something went wrong while generating the QR Code.</b>, { parse_mode: "HTML" });
+                bot.sendMessage(chatId, '🚫 <b>Something went wrong while generating the QR Code.</b>, { parse_mode: "HTML" });
             }
         });
     }
