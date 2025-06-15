@@ -1,0 +1,22 @@
+{
+  "name": "upi-qr-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot to generate UPI QR codes - Powered by SHUBH",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "keywords": [
+    "telegram-bot",
+    "upi",
+    "qrcode",
+    "payment",
+    "shubh"
+  ],
+  "author": "SHUBH",
+  "license": "ISC",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.61.0",
+    "qrcode": "^1.5.1"
+  }
+}
