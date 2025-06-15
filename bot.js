@@ -1,9 +1,22 @@
 const TelegramBot = require('node-telegram-bot-api');
 const QRCode = require('qrcode');
+const express = require('express');
 
 // Your Telegram Bot Token
-const token = '7823540168:AAGbWnEqQ3J-0bNiDqYqDPvJ8jXYkzjf0y8';
+const token = process.env.BOT_TOKEN;
 const bot = new TelegramBot(token, { polling: true });
+
+// Express Web Server (for keep-alive)
+const app = express();
+const PORT = process.env.PORT  3000;
+
+app.get('/', (req, res) => {
+  res.send("🤖 UPI QR Generator Bot — Powered by SHUBH is Alive!");
+});
+
+app.listen(PORT, () => {
+  console.log(`Web server running on port ${PORT}`);
+});
 
 let userUPI = {};
 let activeTimers = {};  // to store expiry timers
@@ -38,21 +51,21 @@ bot.on('message', (msg) => {
                 return;
             }
             userUPI[chatId] = upiID;
-            bot.sendMessage(chatId, ✅ Your UPI ID has been successfully saved as:\n\n<b>${upiID}</b>, { parse_mode: "HTML" });
+            bot.sendMessage(chatId, `✅ Your UPI ID has been successfully saved as:\n\n<b>${upiID}</b>`, { parse_mode: "HTML" });
         });
     }
 
     else if (text === '💳 Generate QR Code') {
         if (!userUPI[chatId]) {
-            bot.sendMessage(chatId, '⚠️ You need to set your UPI ID first using 📝 Set UPI ID.', { parse_mode: "HTML" });
+            bot.sendMessage(chatId, `⚠️ You need to set your UPI ID first using 📝 Set UPI ID.`, { parse_mode: "HTML" });
             return;
         }
 
-        bot.sendMessage(chatId, '💰 <b>Enter the amount you want to receive (in ₹):</b>', { parse_mode: "HTML" });
+        bot.sendMessage(chatId, `💰 <b>Enter the amount you want to receive (in ₹):</b>`, { parse_mode: "HTML" });
         bot.once('message', async (amtMsg) => {
             const amount = parseFloat(amtMsg.text.trim());
-            if (isNaN(amount) || amount <= 0) {
-                bot.sendMessage(chatId, '❌ <b>Invalid amount entered.</b>\nPlease enter a valid numeric amount.', { parse_mode: "HTML" });
+            if (isNaN(amount)  amount <= 0) {
+                bot.sendMessage(chatId, ❌ <b>Invalid amount entered.</b>\nPlease enter a valid numeric amount., { parse_mode: "HTML" });
                 return;
             }
 
@@ -63,7 +76,7 @@ bot.on('message', (msg) => {
                 const qrBuffer = await QRCode.toBuffer(upiURL, { width: 500 });
 
                 await bot.sendPhoto(chatId, qrBuffer, {
-                    caption: '✅ <b>QR Code Generated Successfully!</b>\n\n💸 <b>Amount:</b> ₹${amount}\n🔗 <b>UPI ID:</b> ${upiID}\n\n⚠️ <b>This QR code will expire automatically after 5 minutes.</b>\n\n🚀 <i>Powered by SHUBH</i>,
+                    caption: ✅ <b>QR Code Generated Successfully!</b>\n\n💸 <b>Amount:</b> ₹${amount}\n🔗 <b>UPI ID:</b> ${upiID}\n\n⚠️ <b>This QR code will expire automatically after 5 minutes.</b>\n\n🚀 <i>Powered by SHUBH</i>,
                     parse_mode: "HTML"
                 });
 
@@ -76,7 +89,7 @@ bot.on('message', (msg) => {
 
             } catch (err) {
                 console.error(err);
-                bot.sendMessage(chatId, '🚫 <b>Something went wrong while generating the QR Code.</b>', { parse_mode: "HTML" });
+                bot.sendMessage(chatId, 🚫 <b>Something went wrong while generating the QR Code.</b>, { parse_mode: "HTML" });
             }
         });
     }
