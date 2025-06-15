@@ -8,7 +8,7 @@ const bot = new TelegramBot(token, { polling: true });
 
 // Express Web Server (for keep-alive)
 const app = express();
-const PORT = process.env.PORT  3000;
+const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
   res.send("🤖 UPI QR Generator Bot — Powered by SHUBH is Alive!");
