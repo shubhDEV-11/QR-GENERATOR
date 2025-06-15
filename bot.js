@@ -2,7 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const QRCode = require('qrcode');
 
 // Your Telegram Bot Token
-const token = '7823540168:AAGbWnEqQ3J-0bNiDqYqDPvJ8jXYkzjf0y8';
+const token = process.env.BOT_TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 
 let userUPI = {};
